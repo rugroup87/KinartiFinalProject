@@ -1,0 +1,81 @@
+{\rtf1\fbidis\ansi\ansicpg1255\deff0\nouicompat\deflang1037{\fonttbl{\f0\fnil\fcharset0 Arial;}{\f1\fnil\fcharset0 Consolas;}}
+{\colortbl ;\red0\green0\blue255;\red163\green21\blue21;\red255\green0\blue0;\red0\green0\blue0;\red0\green128\blue0;}
+{\*\generator Riched20 10.0.17134}\viewkind4\uc1 
+\pard\ltrpar\sa200\sl276\slmult1\fs20\lang1033 Web.Config\par
+-------------------\par
+\cf1\f1\fs19 <?\cf2 xml\cf1  \cf3 version\cf1 =\cf4 "\cf1 1.0\cf4 "\cf1  \cf3 encoding\cf1 =\cf4 "\cf1 utf-8\cf4 "\cf1 ?>\cf4\par
+\cf1 <!--\cf4\par
+\cf5   For more information on how to configure your ASP.NET application, please visit\cf4\par
+\cf5   {{\field{\*\fldinst{HYPERLINK https://go.microsoft.com/fwlink/?LinkId=301879 }}{\fldrslt{https://go.microsoft.com/fwlink/?LinkId=301879\ul0\cf0}}}}\cf4\f1\fs19\par
+\cf5   \cf1 -->\cf4\par
+\cf1 <\cf2 configuration\cf1 >\cf4\par
+\cf1   \cf4\par
+\cf1   <\cf2 connectionStrings\cf1 >\cf4\par
+\cf1              <\cf2 add\cf1  \cf3 name\cf1 = \cf4 "\cf1 TinderConnectionString\cf4 "\cf1   \cf3 connectionString\cf1 =\cf4 "\cf1 Data Source=Media.ruppin.ac.il;\cf4\par
+\cf1               Initial Catalog=bgroup87_test1; User ID=bgroup87; Password=bgroup87_34689\cf4 "\cf1  />\cf4\par
+\cf1   </\cf2 connectionStrings\cf1 >\cf4\par
+\cf1     \cf4\par
+\cf1   <\cf2 appSettings\cf1 >\cf4\par
+\cf1     <\cf2 add\cf1  \cf3 key\cf1 =\cf4 "\cf1 webpages:Version\cf4 "\cf1  \cf3 value\cf1 =\cf4 "\cf1 3.0.0.0\cf4 "\cf1  />\cf4\par
+\cf1     <\cf2 add\cf1  \cf3 key\cf1 =\cf4 "\cf1 webpages:Enabled\cf4 "\cf1  \cf3 value\cf1 =\cf4 "\cf1 false\cf4 "\cf1  />\cf4\par
+\cf1     <\cf2 add\cf1  \cf3 key\cf1 =\cf4 "\cf1 ClientValidationEnabled\cf4 "\cf1  \cf3 value\cf1 =\cf4 "\cf1 true\cf4 "\cf1  />\cf4\par
+\cf1     <\cf2 add\cf1  \cf3 key\cf1 =\cf4 "\cf1 UnobtrusiveJavaScriptEnabled\cf4 "\cf1  \cf3 value\cf1 =\cf4 "\cf1 true\cf4 "\cf1  />\cf4\par
+\cf1   </\cf2 appSettings\cf1 >\cf4\par
+\cf1   <\cf2 system.web\cf1 >\cf4\par
+\cf1     <\cf2 compilation\cf1  \cf3 debug\cf1 =\cf4 "\cf1 true\cf4 "\cf1  \cf3 targetFramework\cf1 =\cf4 "\cf1 4.6.1\cf4 "\cf1  />\cf4\par
+\cf1     <\cf2 httpRuntime\cf1  \cf3 targetFramework\cf1 =\cf4 "\cf1 4.6.1\cf4 "\cf1  />\cf4\par
+\cf1     <\cf2 httpModules\cf1 >\cf4\par
+\cf1       <\cf2 add\cf1  \cf3 name\cf1 =\cf4 "\cf1 ApplicationInsightsWebTracking\cf4 "\cf1  \cf3 type\cf1 =\cf4 "\cf1 Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web\cf4 "\cf1  />\cf4\par
+\cf1     </\cf2 httpModules\cf1 >\cf4\par
+\cf1   </\cf2 system.web\cf1 >\cf4\par
+\cf1   <\cf2 system.webServer\cf1 >\cf4\par
+\cf1     <\cf2 handlers\cf1 >\cf4\par
+\cf1       <\cf2 remove\cf1  \cf3 name\cf1 =\cf4 "\cf1 ExtensionlessUrlHandler-Integrated-4.0\cf4 "\cf1  />\cf4\par
+\cf1       <\cf2 remove\cf1  \cf3 name\cf1 =\cf4 "\cf1 OPTIONSVerbHandler\cf4 "\cf1  />\cf4\par
+\cf1       <\cf2 remove\cf1  \cf3 name\cf1 =\cf4 "\cf1 TRACEVerbHandler\cf4 "\cf1  />\cf4\par
+\cf1       <\cf2 add\cf1  \cf3 name\cf1 =\cf4 "\cf1 ExtensionlessUrlHandler-Integrated-4.0\cf4 "\cf1  \cf3 path\cf1 =\cf4 "\cf1 *.\cf4 "\cf1  \cf3 verb\cf1 =\cf4 "\cf1 *\cf4 "\cf1  \cf3 type\cf1 =\cf4 "\cf1 System.Web.Handlers.TransferRequestHandler\cf4 "\cf1  \cf3 preCondition\cf1 =\cf4 "\cf1 integratedMode,runtimeVersionv4.0\cf4 "\cf1  />\cf4\par
+\cf1     </\cf2 handlers\cf1 >\cf4\par
+\cf1     <\cf2 validation\cf1  \cf3 validateIntegratedModeConfiguration\cf1 =\cf4 "\cf1 false\cf4 "\cf1  />\cf4\par
+\cf1     <\cf2 modules\cf1 >\cf4\par
+\cf1       <\cf2 remove\cf1  \cf3 name\cf1 =\cf4 "\cf1 ApplicationInsightsWebTracking\cf4 "\cf1  />\cf4\par
+\cf1       <\cf2 add\cf1  \cf3 name\cf1 =\cf4 "\cf1 ApplicationInsightsWebTracking\cf4 "\cf1  \cf3 type\cf1 =\cf4 "\cf1 Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web\cf4 "\cf1  \cf3 preCondition\cf1 =\cf4 "\cf1 managedHandler\cf4 "\cf1  />\cf4\par
+\cf1     </\cf2 modules\cf1 >\cf4\par
+\cf1   </\cf2 system.webServer\cf1 >\cf4\par
+\cf1   <\cf2 runtime\cf1 >\cf4\par
+\cf1     <\cf2 assemblyBinding\cf1  \cf3 xmlns\cf1 =\cf4 "\cf1 urn:schemas-microsoft-com:asm.v1\cf4 "\cf1 >\cf4\par
+\cf1       <\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1         <\cf2 assemblyIdentity\cf1  \cf3 name\cf1 =\cf4 "\cf1 Newtonsoft.Json\cf4 "\cf1  \cf3 culture\cf1 =\cf4 "\cf1 neutral\cf4 "\cf1  \cf3 publicKeyToken\cf1 =\cf4 "\cf1 30ad4fe6b2a6aeed\cf4 "\cf1  />\cf4\par
+\cf1         <\cf2 bindingRedirect\cf1  \cf3 oldVersion\cf1 =\cf4 "\cf1 0.0.0.0-6.0.0.0\cf4 "\cf1  \cf3 newVersion\cf1 =\cf4 "\cf1 6.0.0.0\cf4 "\cf1  />\cf4\par
+\cf1       </\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1       <\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1         <\cf2 assemblyIdentity\cf1  \cf3 name\cf1 =\cf4 "\cf1 System.Web.Optimization\cf4 "\cf1  \cf3 publicKeyToken\cf1 =\cf4 "\cf1 31bf3856ad364e35\cf4 "\cf1  />\cf4\par
+\cf1         <\cf2 bindingRedirect\cf1  \cf3 oldVersion\cf1 =\cf4 "\cf1 1.0.0.0-1.1.0.0\cf4 "\cf1  \cf3 newVersion\cf1 =\cf4 "\cf1 1.1.0.0\cf4 "\cf1  />\cf4\par
+\cf1       </\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1       <\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1         <\cf2 assemblyIdentity\cf1  \cf3 name\cf1 =\cf4 "\cf1 WebGrease\cf4 "\cf1  \cf3 publicKeyToken\cf1 =\cf4 "\cf1 31bf3856ad364e35\cf4 "\cf1  />\cf4\par
+\cf1         <\cf2 bindingRedirect\cf1  \cf3 oldVersion\cf1 =\cf4 "\cf1 0.0.0.0-1.5.2.14234\cf4 "\cf1  \cf3 newVersion\cf1 =\cf4 "\cf1 1.5.2.14234\cf4 "\cf1  />\cf4\par
+\cf1       </\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1       <\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1         <\cf2 assemblyIdentity\cf1  \cf3 name\cf1 =\cf4 "\cf1 System.Web.Helpers\cf4 "\cf1  \cf3 publicKeyToken\cf1 =\cf4 "\cf1 31bf3856ad364e35\cf4 "\cf1  />\cf4\par
+\cf1         <\cf2 bindingRedirect\cf1  \cf3 oldVersion\cf1 =\cf4 "\cf1 1.0.0.0-3.0.0.0\cf4 "\cf1  \cf3 newVersion\cf1 =\cf4 "\cf1 3.0.0.0\cf4 "\cf1  />\cf4\par
+\cf1       </\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1       <\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1         <\cf2 assemblyIdentity\cf1  \cf3 name\cf1 =\cf4 "\cf1 System.Web.WebPages\cf4 "\cf1  \cf3 publicKeyToken\cf1 =\cf4 "\cf1 31bf3856ad364e35\cf4 "\cf1  />\cf4\par
+\cf1         <\cf2 bindingRedirect\cf1  \cf3 oldVersion\cf1 =\cf4 "\cf1 1.0.0.0-3.0.0.0\cf4 "\cf1  \cf3 newVersion\cf1 =\cf4 "\cf1 3.0.0.0\cf4 "\cf1  />\cf4\par
+\cf1       </\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1       <\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1         <\cf2 assemblyIdentity\cf1  \cf3 name\cf1 =\cf4 "\cf1 System.Web.Mvc\cf4 "\cf1  \cf3 publicKeyToken\cf1 =\cf4 "\cf1 31bf3856ad364e35\cf4 "\cf1  />\cf4\par
+\cf1         <\cf2 bindingRedirect\cf1  \cf3 oldVersion\cf1 =\cf4 "\cf1 1.0.0.0-5.2.3.0\cf4 "\cf1  \cf3 newVersion\cf1 =\cf4 "\cf1 5.2.3.0\cf4 "\cf1  />\cf4\par
+\cf1       </\cf2 dependentAssembly\cf1 >\cf4\par
+\cf1     </\cf2 assemblyBinding\cf1 >\cf4\par
+\cf1   </\cf2 runtime\cf1 >\cf4\par
+\cf1   <\cf2 system.codedom\cf1 >\cf4\par
+\cf1     <\cf2 compilers\cf1 >\cf4\par
+\cf1       <\cf2 compiler\cf1  \cf3 language\cf1 =\cf4 "\cf1 c#;cs;csharp\cf4 "\cf1  \cf3 extension\cf1 =\cf4 "\cf1 .cs\cf4 "\cf1  \cf3 type\cf1 =\cf4 "\cf1 Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35\cf4 "\cf1  \cf3 warningLevel\cf1 =\cf4 "\cf1 4\cf4 "\cf1  \cf3 compilerOptions\cf1 =\cf4 "\cf1 /langversion:default /nowarn:1659;1699;1701\cf4 "\cf1  />\cf4\par
+\cf1       <\cf2 compiler\cf1  \cf3 language\cf1 =\cf4 "\cf1 vb;vbs;visualbasic;vbscript\cf4 "\cf1  \cf3 extension\cf1 =\cf4 "\cf1 .vb\cf4 "\cf1  \cf3 type\cf1 =\cf4 "\cf1 Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35\cf4 "\cf1  \cf3 warningLevel\cf1 =\cf4 "\cf1 4\cf4 "\cf1  \cf3 compilerOptions\cf1 =\cf4 "\cf1 /langversion:default /nowarn:41008 /define:_MYTYPE=\\\cf3 &quot;\cf1 Web\\\cf3 &quot;\cf1  /optionInfer+\cf4 "\cf1  />\cf4\par
+\cf1     </\cf2 compilers\cf1 >\cf4\par
+\cf1   </\cf2 system.codedom\cf1 >\cf4\par
+\cf1 </\cf2 configuration\cf1 >\cf4\par
+\cf0\f0\fs20\par
+}
+ 

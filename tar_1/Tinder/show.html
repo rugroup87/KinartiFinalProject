@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DB Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <style type="text/css">
+
+
+        div.container {
+            width: 80%;
+        }
+
+        #people td {
+            height: 40px;
+        }
+
+        #people img {
+            height: 35px;
+        }
+
+        #results {
+            width:100%;
+            margin-top:40px;
+        }
+
+        #pForm {
+            width: 100%;
+        }
+
+    </style>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("#pForm").submit(f1);
+        });
+
+        function f1() {
+            FilterPerson();
+            return false; // the return false will prevent the form from being submitted
+            // hence the page will not reload
+        }
+
+
+        function FilterPerson() {
+            Filter = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                Gender: $("#gender").val(),
+                MinAge: $("#minAge").val(),
+                MaxAge: parseFloat($("#maxAge").val())
+            }
+            ajaxCall("POST", "../api/person/filter", JSON.stringify(Filter), success, error);
+        }
+
+
+        function success(data) {
+            $('#people').DataTable({
+                data: data,
+                "autoWidth": false,
+                columns: [
+                    { data: "Name" },
+                    { data: "FamilyName" },
+                    { data: "Age" },
+                    { data: "Height" },
+                    { data: "Address" },
+                    { data: "Image", render: getImg }
+                ]
+            })
+        }
+
+
+        function getImg(data, type, full, meta) {
+            if (full.Gender === 'Male') {
+                return '<img src="images/male.jpg" />';
+            } else {
+                return '<img src="images/female.jpg" />';
+            }
+        }
+
+        function error(err) {
+            swal("Error in getting the persons");
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Tinder</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="insert.html">Add a Person</a></li>
+                <li class="active"><a href="show.html">Show</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <form id="pForm">
+            
+            <h2>Looking for:</h2>
+
+            <div class="form-group">
+                <label for="minAge">Minimal Age</label>
+                <input type="number" class="form-control" id="minAge" placeholder="minimal age" required>
+            </div>
+            <div class="form-group">
+                <label for="maxAge">Maximal Age</label>
+                <input type="number" class="form-control" id="maxAge" placeholder="maximal age" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="">Choose Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Search" />
+
+
+            <div id="results">
+
+                <table id="people" class="display" style="width:100%">
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Family Name</th>
+                            <th>Age</th>
+                            <th>Height</th>
+                            <th>Address</th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+</html>

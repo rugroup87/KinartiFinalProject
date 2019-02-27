@@ -1,0 +1,166 @@
+{\rtf1\fbidis\ansi\ansicpg1255\deff0\nouicompat\deflang1037{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset0 Consolas;}{\f2\fnil\fcharset177 Calibri;}}
+{\colortbl ;\red0\green0\blue255;\red128\green0\blue0;\red0\green0\blue0;\red255\green0\blue0;\red163\green21\blue21;\red0\green128\blue0;}
+{\*\generator Riched20 10.0.17134}\viewkind4\uc1 
+\pard\ltrpar\sa200\sl276\slmult1\f0\fs22\lang1033 show.html\par
+----------------------\par
+\cf1\f1\fs19 <\cf2 !DOCTYPE\cf3  \cf4 html\cf1 >\cf3\par
+\cf1 <\cf2 html\cf3  \cf4 lang\cf1 ="en">\cf3\par
+\cf1 <\cf2 head\cf1 >\cf3\par
+    \cf1 <\cf2 title\cf1 >\cf3 DB Example\cf1 </\cf2 title\cf1 >\cf3\par
+    \cf1 <\cf2 meta\cf3  \cf4 charset\cf1 ="utf-8">\cf3\par
+    \cf1 <\cf2 meta\cf3  \cf4 name\cf1 ="viewport"\cf3  \cf4 content\cf1 ="width=device-width, initial-scale=1">\cf3\par
+    \cf1 <\cf2 link\cf3  \cf4 rel\cf1 ="stylesheet"\cf3  \cf4 href\cf1 ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\cf3\par
+    \cf1 <\cf2 script\cf3  \cf4 src\cf1 ="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"></\cf2 script\cf1 >\cf3\par
+\par
+    \cf1 <\cf2 script\cf3  \cf4 src\cf1 ="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></\cf2 script\cf1 >\cf3\par
+    \cf1 <\cf2 script\cf3  \cf4 src\cf1 ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></\cf2 script\cf1 >\cf3\par
+    \cf1 <\cf2 script\cf3  \cf4 src\cf1 ="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></\cf2 script\cf1 >\cf3\par
+    \cf1 <\cf2 script\cf3  \cf4 src\cf1 ="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></\cf2 script\cf1 >\cf3\par
+\par
+    \cf1 <\cf2 script\cf3  \cf4 src\cf1 ="../Scripts/ajaxCalls.js"></\cf2 script\cf1 >\cf3\par
+\par
+    \cf1 <\cf2 style\cf3  \cf4 type\cf1 ="text/css">\cf3\par
+\par
+\par
+        \cf2 div.container\cf3  \{\par
+            \cf4 width\cf3 : \cf1 80%\cf3 ;\par
+        \}\par
+\par
+        \cf2 #people\cf3  \cf2 td\cf3  \{\par
+            \cf4 height\cf3 : \cf1 40px\cf3 ;\par
+        \}\par
+\par
+        \cf2 #people\cf3  \cf2 img\cf3  \{\par
+            \cf4 height\cf3 : \cf1 35px\cf3 ;\par
+        \}\par
+\par
+        \cf2 #results\cf3  \{\par
+            \cf4 width\cf3 :\cf1 100%\cf3 ;\par
+            \cf4 margin-top\cf3 :\cf1 40px\cf3 ;\par
+        \}\par
+\par
+        \cf2 #pForm\cf3  \{\par
+            \cf4 width\cf3 : \cf1 100%\cf3 ;\par
+        \}\par
+\par
+    \cf1 </\cf2 style\cf1 >\cf3\par
+\par
+\par
+    \cf1 <\cf2 script\cf1 >\cf3\par
+\par
+        $(document).ready(\cf1 function\cf3  () \{\par
+            $(\cf5 "#pForm"\cf3 ).submit(f1);\par
+        \});\par
+\par
+        \cf1 function\cf3  f1() \{\par
+            FilterPerson();\par
+            \cf1 return\cf3  \cf1 false\cf3 ; \cf6 // the return false will prevent the form from being submitted\par
+\cf3             \cf6 // hence the page will not reload\par
+\cf3         \}\par
+\par
+\par
+        \cf1 function\cf3  FilterPerson() \{\par
+            Filter = \{ \cf6 // Note that the name of the fields must be identical to the names of the properties of the object in the server\par
+\cf3                 Gender: $(\cf5 "#gender"\cf3 ).val(),\par
+                MinAge: $(\cf5 "#minAge"\cf3 ).val(),\par
+                MaxAge: parseFloat($(\cf5 "#maxAge"\cf3 ).val())\par
+            \}\par
+            ajaxCall(\cf5 "POST"\cf3 , \cf5 "../api/person/filter"\cf3 , JSON.stringify(Filter), success, error);\par
+        \}\par
+\par
+\par
+        \cf1 function\cf3  success(data) \{\par
+            $(\cf5 '#people'\cf3 ).DataTable(\{\par
+                data: data,\par
+                \cf5 "autoWidth"\cf3 : \cf1 false\cf3 ,\par
+                columns: [\par
+                    \{ data: \cf5 "Name"\cf3  \},\par
+                    \{ data: \cf5 "FamilyName"\cf3  \},\par
+                    \{ data: \cf5 "Age"\cf3  \},\par
+                    \{ data: \cf5 "Height"\cf3  \},\par
+                    \{ data: \cf5 "Address"\cf3  \},\par
+                    \{ data: \cf5 "Image"\cf3 , render: getImg \}\par
+                ]\par
+            \})\par
+        \}\par
+\par
+\par
+        \cf1 function\cf3  getImg(data, type, full, meta) \{\par
+            \cf1 if\cf3  (full.Gender === \cf5 'Male'\cf3 ) \{\par
+                \cf1 return\cf3  \cf5 '<img src="Tinder/images/male.jpg" />'\cf3 ;\par
+            \} \cf1 else\cf3  \{\par
+                \cf1 return\cf3  \cf5 '<img src="Tinder/images/female.jpg" />'\cf3 ;\par
+            \}\par
+        \}\par
+\par
+        \cf1 function\cf3  error(err) \{\par
+            swal(\cf5 "Error in getting the persons"\cf3 );\par
+        \}\par
+\par
+    \cf1 </\cf2 script\cf1 >\cf3\par
+\par
+\cf1 </\cf2 head\cf1 >\cf3\par
+\cf1 <\cf2 body\cf1 >\cf3\par
+\par
+    \cf1 <\cf2 nav\cf3  \cf4 class\cf1 ="navbar navbar-default">\cf3\par
+        \cf1 <\cf2 div\cf3  \cf4 class\cf1 ="container-fluid">\cf3\par
+            \cf1 <\cf2 div\cf3  \cf4 class\cf1 ="navbar-header">\cf3\par
+                \cf1 <\cf2 a\cf3  \cf4 class\cf1 ="navbar-brand"\cf3  \cf4 href\cf1 ="#">\cf3 Tinder\cf1 </\cf2 a\cf1 >\cf3\par
+            \cf1 </\cf2 div\cf1 >\cf3\par
+            \cf1 <\cf2 ul\cf3  \cf4 class\cf1 ="nav navbar-nav">\cf3\par
+                \cf1 <\cf2 li\cf1 ><\cf2 a\cf3  \cf4 href\cf1 ="insert.html">\cf3 Add a Person\cf1 </\cf2 a\cf1 ></\cf2 li\cf1 >\cf3\par
+                \cf1 <\cf2 li\cf3  \cf4 class\cf1 ="active"><\cf2 a\cf3  \cf4 href\cf1 ="show.html">\cf3 Show\cf1 </\cf2 a\cf1 ></\cf2 li\cf1 >\cf3\par
+            \cf1 </\cf2 ul\cf1 >\cf3\par
+        \cf1 </\cf2 div\cf1 >\cf3\par
+    \cf1 </\cf2 nav\cf1 >\cf3\par
+\par
+\par
+    \cf1 <\cf2 div\cf3  \cf4 class\cf1 ="container">\cf3\par
+        \cf1 <\cf2 form\cf3  \cf4 id\cf1 ="pForm">\cf3\par
+            \par
+            \cf1 <\cf2 h2\cf1 >\cf3 Looking for:\cf1 </\cf2 h2\cf1 >\cf3\par
+\par
+            \cf1 <\cf2 div\cf3  \cf4 class\cf1 ="form-group">\cf3\par
+                \cf1 <\cf2 label\cf3  \cf4 for\cf1 ="minAge">\cf3 Minimal Age\cf1 </\cf2 label\cf1 >\cf3\par
+                \cf1 <\cf2 input\cf3  \cf4 type\cf1 ="number"\cf3  \cf4 class\cf1 ="form-control"\cf3  \cf4 id\cf1 ="minAge"\cf3  \cf4 placeholder\cf1 ="minimal age"\cf3  \cf4 required\cf1 >\cf3\par
+            \cf1 </\cf2 div\cf1 >\cf3\par
+            \cf1 <\cf2 div\cf3  \cf4 class\cf1 ="form-group">\cf3\par
+                \cf1 <\cf2 label\cf3  \cf4 for\cf1 ="maxAge">\cf3 Maximal Age\cf1 </\cf2 label\cf1 >\cf3\par
+                \cf1 <\cf2 input\cf3  \cf4 type\cf1 ="number"\cf3  \cf4 class\cf1 ="form-control"\cf3  \cf4 id\cf1 ="maxAge"\cf3  \cf4 placeholder\cf1 ="maximal age"\cf3  \cf4 required\cf1 >\cf3\par
+            \cf1 </\cf2 div\cf1 >\cf3\par
+            \cf1 <\cf2 div\cf3  \cf4 class\cf1 ="form-group">\cf3\par
+                \cf1 <\cf2 label\cf3  \cf4 for\cf1 ="gender">\cf3 Gender\cf1 </\cf2 label\cf1 >\cf3\par
+                \cf1 <\cf2 select\cf3  \cf4 id\cf1 ="gender"\cf3  \cf4 required\cf1 >\cf3\par
+                    \cf1 <\cf2 option\cf3  \cf4 value\cf1 ="">\cf3 Choose Gender\cf1 </\cf2 option\cf1 >\cf3\par
+                    \cf1 <\cf2 option\cf3  \cf4 value\cf1 ="Male">\cf3 Male\cf1 </\cf2 option\cf1 >\cf3\par
+                    \cf1 <\cf2 option\cf3  \cf4 value\cf1 ="Female">\cf3 Female\cf1 </\cf2 option\cf1 >\cf3\par
+                \cf1 </\cf2 select\cf1 >\cf3\par
+            \cf1 </\cf2 div\cf1 >\cf3\par
+\par
+            \cf1 <\cf2 input\cf3  \cf4 type\cf1 ="submit"\cf3  \cf4 value\cf1 ="Search"\cf3  \cf1 />\cf3\par
+\par
+\par
+            \cf1 <\cf2 div\cf3  \cf4 id\cf1 ="results">\cf3\par
+\par
+                \cf1 <\cf2 table\cf3  \cf4 id\cf1 ="people"\cf3  \cf4 class\cf1 ="display"\cf3  \cf4 style\cf1 ="\cf4 width\cf3 :\cf1 100%">\cf3\par
+\par
+                    \cf1 <\cf2 thead\cf1 >\cf3\par
+                        \cf1 <\cf2 tr\cf1 >\cf3\par
+                            \cf1 <\cf2 th\cf1 >\cf3 Name\cf1 </\cf2 th\cf1 >\cf3\par
+                            \cf1 <\cf2 th\cf1 >\cf3 Family Name\cf1 </\cf2 th\cf1 >\cf3\par
+                            \cf1 <\cf2 th\cf1 >\cf3 Age\cf1 </\cf2 th\cf1 >\cf3\par
+                            \cf1 <\cf2 th\cf1 >\cf3 Height\cf1 </\cf2 th\cf1 >\cf3\par
+                            \cf1 <\cf2 th\cf1 >\cf3 Address\cf1 </\cf2 th\cf1 >\cf3\par
+                            \cf1 <\cf2 th\cf1 >\cf3 Image\cf1 </\cf2 th\cf1 >\cf3\par
+                        \cf1 </\cf2 tr\cf1 >\cf3\par
+                    \cf1 </\cf2 thead\cf1 >\cf3\par
+                \cf1 </\cf2 table\cf1 >\cf3\par
+            \cf1 </\cf2 div\cf1 >\cf3\par
+        \cf1 </\cf2 form\cf1 >\cf3\par
+    \cf1 </\cf2 div\cf1 >\cf3\par
+\par
+\par
+\cf1 </\cf2 body\cf1 >\cf3\par
+\cf1 </\cf2 html\cf1 >\cf0\f2\rtlch\fs22\lang1037\par
+}
+ 

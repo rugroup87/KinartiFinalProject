@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tinder HW</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            //get all hobbies from DB
+            ajaxCall("GET", "../api/hobbies", "", successGetHobbies, errorGetHobbies);
+
+            $("#pForm").submit(f1);
+            $("#Premium").prop("disabled", true);
+
+            $('#buttonUpload').on('click', function () {
+                var data = new FormData();
+                var files = $("#files").get(0).files;
+
+                // Add the uploaded file to the form data collection
+                if (files.length > 0) {
+                    for (f = 0; f < files.length; f++) {
+                        data.append("UploadedImage", files[f]);
+                    }
+                    data.append("name", $("#email").val()); // aopend what ever data you want to send along with the files. See how you extract it in the controller.
+                }
+
+                // Ajax upload
+                $.ajax({
+                    type: "POST",
+                    url: "../Api/FileUpload",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: showImages,
+                    error: error
+                });
+
+                return false;
+            });
+        });
+
+        function AddPerson() {
+            var data = [];
+            var $el = $("#hobbies");
+            Person = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                Name: $("#name").val(),
+                FamilyName: $("#familyName").val(),
+                Age: parseFloat($("#age").val()),
+                Height: parseFloat($("#height").val()),
+                Gender: $("#gender").val(),
+                Address: $("#address").val(),
+                IsPremium: $("[name='Premium']:checked").val(),
+                Phone: $("#Tel").val(),
+                Email: $("#email").val(),
+                Password: $("#password").val(),
+                Image: $("#image").children('img').attr('src'),
+                Hobbies:
+                    $el.find('option:selected').each(function () {
+                        data.push($(this).val());
+                    }),
+                Hobbies: data
+            }
+            ajaxCall("POST", "../api/person", JSON.stringify(Person), success, error);
+
+        }
+
+        function showImages(data) {
+            console.log(data);
+
+            var imgStr = "";
+
+            if (Array.isArray(data)) {
+
+                for (var i = 0; i < data.length; i++) {
+                    imgStr += "<img style='height: 150px' src='../" + data[i] + "'/>";
+                }
+
+            }
+
+            else {
+                imgStr = "<img style='height: 150px' src='../" + data + "'/>";
+            }
+
+            document.getElementById("image").innerHTML = imgStr;
+        }
+
+        function error(data) {
+            console.log(data);
+        }
+
+        function success(data) {
+            if (data == -999)
+            {
+                $("#email").val('');
+                swal("Wrong Email", "This Email Already Exist", "error");
+            }
+            else
+            {
+                ClearAllFields();
+                swal("Added Successfuly!", "Good luck in finding a partner", "success");
+            }
+         
+        }
+
+        function ClearAllFields() {
+            $("#name").val('');
+            $("#familyName").val('');
+            $("#address").val('');
+            $("#age").val('');
+            $("#height").val('');
+            $("#Tel").val('');
+            $("#gender").val('');
+            $('input[name=Premium]').prop('checked', false);
+            $("#hobbies").val('');
+            $("#email").val('');
+            $("#password").val('');
+            $("#image").children('img').attr('src', '');
+        }
+
+        function error(err) {
+            alert("error");
+        }
+
+        function f1() {
+            AddPerson();
+            return false; // the return false will prevent the form from being submitted
+            // hence the page will not reload
+        }
+
+        // this function is activated in case of a success
+        function successGetHobbies(hobbiesdata) {
+            str = "";
+            for (var i = 0; i < hobbiesdata.length; i++) {
+                str += "<option value='" + i + "'>" + hobbiesdata[i].Hname + "</option>";
+            }
+            $('#hobbies').append(str);
+        }
+
+        // this function is activated in case of a failure
+        function errorGetHobbies(err) {
+
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Tinder</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="insert.html">Add a Person</a></li>
+                <li><a href="showNew.html">Show</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <form id="pForm">
+            <h2>Enter Your Details</h2>
+            <div class="form-group">
+                <label for="name">Email</label>
+                <input type="email" class="form-control" value="kinarti@gmail.com" id="email" placeholder="Enter your Email - example@example.domain" required
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                       oninvalid="this.setCustomValidity('Email should look like - example@example.domain')"
+                       oninput="this.setCustomValidity('')">
+            </div>
+            <div class="form-group">
+                <label for="name">Password</label>
+                <input type="password" class="form-control" value="123456Kn" id="password" placeholder="Enter your Password" required
+                       pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                       oninvalid="this.setCustomValidity('Password must contain 8 or more characters, at least one number, one uppercase and lowercase letter')"
+                       oninput="this.setCustomValidity('')">
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name" required
+                       pattern="^[a-zA-Z]+$"
+                       oninvalid="this.setCustomValidity('Names should be contain only letters')"
+                       oninput="this.setCustomValidity('')">
+            </div>
+            <div class="form-group">
+                <label for="familyName">Family Name</label>
+                <input type="text" class="form-control" id="familyName" placeholder="Enter your family name" required
+                       pattern="^[a-zA-Z]+$"
+                       oninvalid="this.setCustomValidity('Names should be contain only letters')"
+                       oninput="this.setCustomValidity('')">
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" value="Hadera" id="address" placeholder="Enter your Address" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" value="22" id="age" placeholder="Enter your Age" min="18" max="80" required
+                       oninvalid="this.setCustomValidity('must be over 18 and under 80')">
+            </div>
+            <div class="form-group">
+                <label for="height">Height</label>
+                <input type="number" class="form-control" value="173" id="height" placeholder="Enter your Height" min="120" max="250" required
+                       oninvalid="this.setCustomValidity('should be between 120cm and 250cm')"
+                       oninput="this.setCustomValidity('')">
+            </div>
+            <div class="form-group">
+                <label for="Tel">Tel</label>
+                <input type="tel" class="form-control" value="0546665555" id="Tel" placeholder="Enter your Tel - 10 digits that starts with 0" required
+                       pattern="0[0-9]{2}[0-9]{7}"
+                       oninvalid="this.setCustomValidity('Phone number should be 10 digits that starts with 0')"
+                       oninput="this.setCustomValidity('')" />
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="">Choose Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Premium">Premium</label> <br />
+                <input type="radio" name="Premium" value="true" required> Premium<br />
+                <input type="radio" name="Premium" value="false" checked="checked"> Non Premium<br />
+            </div>
+            <div class="form-group">
+                <label for="hobbies">Hobbies</label>
+                <select id="hobbies" multiple required>
+                    <!--<option value="1">צפייה בטלויזיה</option>
+            <option value="2">סרטים</option>
+            <option value="3"> צלילה עם דולפינים </option>
+            <option value="4">שופינג</option>
+            <option value="5">מסעדות</option>-->
+                </select>
+            </div>
+            <!--<button class="btn btn-default" id="add">Add</button>-->
+            <div style="padding-left:35%">
+                <label for="files">Files</label>
+                <input type="file" id="files" name="files" multiple="multiple" />
+                <br />
+                <button type="button" id="buttonUpload">Upload files</button>
+            </div>
+            <div id="image" style="position:relative;padding-left:35%;padding-bottom:10%"></div>
+            <input type="submit" value="Submit BTN" />
+        </form>
+    </div>
+</body>
+</html>

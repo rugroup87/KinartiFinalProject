@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        $(document).ready(function () {
+            //get all hobbies from DB
+            arr = [];
+            SpecificId = 0;
+            HobbiesList = [];
+            var userEmail = window.location.href.slice(window.location.href.indexOf('=') + 1)
+            uri = "../api/persons?email=" + userEmail
+            ajaxCall("GET", uri, "", success, error);
+
+
+            $("#saveAll").submit(f2);
+            $('#cancel').click(function () {
+                window.location.replace("login.html");
+            });
+            //$("#Premium").prop("disabled", true);
+
+            $('#buttonUpload').on('click', function () {
+                var data = new FormData();
+                var files = $("#files").get(0).files;
+
+                // Add the uploaded file to the form data collection
+                if (files.length > 0) {
+                    for (f = 0; f < files.length; f++) {
+                        data.append("UploadedImage", files[f]);
+                    }
+                    data.append("name", $("#email").val()); // aopend what ever data you want to send along with the files. See how you extract it in the controller.
+                }
+
+                // Ajax upload
+                $.ajax({
+                    type: "POST",
+                    url: "../Api/FileUpload",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: showImages,
+                    error: errorImage
+                });
+                return false;
+            });
+        });
+
+        function showImages(data) {
+            console.log(data);
+
+            var imgStr = "";
+
+            if (Array.isArray(data)) {
+
+                for (var i = 0; i < data.length; i++) {
+                    imgStr += "<img style='height: 150px' src='../" + data[i] + "'/>";
+                }
+
+            }
+
+            else {
+                imgStr = "<img style='height: 150px' src='../" + data + "'/>";
+            }
+
+            document.getElementById("image").innerHTML = imgStr;
+        }
+
+        function errorImage(data) {
+            console.log(data);
+        }
+
+        function success(data)
+        {
+            $("#email").val(data.Email)
+            //$("#email").prop('disabled', true)
+            $("#password").val(data.Password)
+            $("#name").val(data.Name)
+            $("#familyName").val(data.FamilyName)
+            $("#address").val(data.Address)
+            $("#age").val(data.Age)
+            $("#height").val(data.Height)
+            $("#Tel").val(data.Phone)
+
+            $("#image").children('img').attr('src', data.Image);
+            if (data.IsPremium)
+            {
+                $('input[name=Premium][value=true]').prop('checked', true);
+            }
+            else
+            {
+                $('input[name=Premium][value=false]').prop('checked', true);
+            }
+            $("#gender").val(data.Gender)
+            for (var i = 0; i < data.Hobbies.length; i++) {
+                arr.push(data.Hobbies[i]);
+            }
+            ajaxCall("GET", "../api/hobbies", "", successGetHobbies, errorGetHobbies);
+            //$("#image").val(data.Image)
+            //Need to push the ims in SRC
+            //$("#gender").val(data.Phone)
+            //$("#premium").val(data.Phone)
+            //$("#hobbies").val(data.Phone)
+            SpecificId = data.ID
+
+        }
+
+        function error(data)
+        {
+            console.log(data);
+        }
+
+        function successGetHobbies(hobbiesdata) {
+            str = "";
+            for (var i = 0; i < hobbiesdata.length; i++) {
+                for (var k = 0; k < arr.length; k++) {
+                    if (arr[k] == i + 1) {
+                        str += "<option selected value='" + i + "'>" + hobbiesdata[i].Hname + "</option>";
+                        k = arr.length;
+                    }
+                    else {
+                        if (k == arr.length - 1) {
+                            str += "<option  value='" + i + "'>" + hobbiesdata[i].Hname + "</option>";
+                        }
+                    }
+                }
+            }
+            $('#hobbies').append(str);
+        }
+
+
+        function errorGetHobbies(err)
+        {
+            swal("Error: " + err);
+        }
+
+        function SaveAllUpdates()
+        {
+            var data = [];
+            var $el = $("#hobbies");
+            Person = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                Name: $("#name").val(),
+                FamilyName: $("#familyName").val(),
+                Age: parseFloat($("#age").val()),
+                Height: parseFloat($("#height").val()),
+                Gender: $("#gender").val(),
+                Address: $("#address").val(),
+                IsPremium: $("[name='Premium']:checked").val(),
+                Phone: $("#Tel").val(),
+                Email: $("#email").val(),
+                Password: $("#password").val(),
+                Image: $("#image").children('img').attr('src'),
+                ID: SpecificId,
+                Hobbies:
+                    $el.find('option:selected').each(function () {
+                        data.push($(this).val());
+                    }),
+                Hobbies: data
+            }
+            ajaxCall("PUT", "../api/person", JSON.stringify(Person), successUpdates, errorUpdates);
+        }
+
+        function successUpdates(data) 
+        {
+            
+            swal("Added Successfuly!", "Your Details Have Been Updated", "success");
+            window.location.replace("login.html");
+           
+        }
+
+        function errorUpdates()
+        {
+
+        }
+        function f2() {
+            SaveAllUpdates()
+            return false
+        }
+
+        
+
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Tinder</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Update</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <form id="saveAll">
+        <h2>Enter Your Details</h2>
+        <div class="form-group">
+            <label for="name">Email</label>
+            <input type="email" class="form-control" disabled id="email" placeholder="Enter your Email - example@example.domain" required
+                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                   oninvalid="this.setCustomValidity('Email should look like - example@example.domain')"
+                   oninput="this.setCustomValidity('')">
+        </div>
+        <div class="form-group">
+            <label for="name">Password</label>
+            <input type="text" class="form-control" id="password" placeholder="Enter your Password" required
+                   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                   oninvalid="this.setCustomValidity('Password must contain 8 or more characters, at least one number, one uppercase and lowercase letter')"
+                   oninput="this.setCustomValidity('')">
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name" required
+                   pattern="^[a-zA-Z]+$"
+                   oninvalid="this.setCustomValidity('Names should be contain only letters')"
+                   oninput="this.setCustomValidity('')">
+        </div>
+        <div class="form-group">
+            <label for="familyName">Family Name</label>
+            <input type="text" class="form-control" id="familyName" placeholder="Enter your family name" required
+                   pattern="^[a-zA-Z]+$"
+                   oninvalid="this.setCustomValidity('Names should be contain only letters')"
+                   oninput="this.setCustomValidity('')">
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" placeholder="Enter your Address" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" class="form-control" id="age" placeholder="Enter your Age" min="18" max="80" required
+                   oninvalid="this.setCustomValidity('must be over 18 and under 80')">
+        </div>
+        <div class="form-group">
+            <label for="height">Height</label>
+            <input type="number" class="form-control" id="height" placeholder="Enter your Height" min="120" max="250" required
+                   oninvalid="this.setCustomValidity('should be between 120cm and 250cm')"
+                   oninput="this.setCustomValidity('')">
+        </div>
+        <div class="form-group">
+            <label for="Tel">Tel</label>
+            <input type="tel" class="form-control" id="Tel" placeholder="Enter your Tel - 10 digits that starts with 0" required
+                   pattern="0[0-9]{2}[0-9]{7}"
+                   oninvalid="this.setCustomValidity('Phone number should be 10 digits that starts with 0')"
+                   oninput="this.setCustomValidity('')" />
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="Premium">Premium</label> <br />
+            <input type="radio" name="Premium" value="true" required> Premium<br />
+            <input type="radio" name="Premium" value="false"> Non Premium<br />
+        </div>
+        <div class="form-group">
+            <label for="hobbies">Hobbies</label>
+            <select id="hobbies" multiple required> </select>
+        </div>
+        <!--<button class="btn btn-default" id="add">Add</button>-->
+        <div style="padding-left:35%">
+            <label for="files">Files</label>
+            <input type="file" id="files" name="files" multiple="multiple" />
+            <br />
+            <button type="button" id="buttonUpload">Upload files</button>
+        </div>
+        <div id="image" style="position:relative;padding-left:35%;padding-bottom:10%">
+            <img style="height:150px" src="" />
+        </div>
+        <input id="save" type="submit" value="Save" />
+        <input id="cancel" value="Cancel" type="button" />
+        
+    </form>
+</div>
+</body>
+</html>

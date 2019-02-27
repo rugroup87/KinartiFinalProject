@@ -1,0 +1,402 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>DataTable Example</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <style type="text/css">
+
+
+        /*
+           Side Navigation Menu V2, RWD
+           ===================
+           License:
+           https://goo.gl/EaUPrt
+           ===================
+           Author: @PableraShow
+
+        */
+
+        @charset "UTF-8";
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.42em;
+            color: #A7A1AE;
+            background-color: #1F2739;
+        }
+
+        tr td img {
+            height: 30px;
+            width: 30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 300;
+            line-height: 1em;
+            text-align: center;
+            color: #4DC3FA;
+        }
+
+        h2 {
+            font-size: 1em;
+            font-weight: 300;
+            text-align: center;
+            display: block;
+            line-height: 1em;
+            padding-bottom: 2em;
+            color: #FB667A;
+        }
+
+            h2 a {
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #FB667A;
+                text-decoration: none;
+            }
+
+        .blue {
+            color: #185875;
+        }
+
+        .yellow {
+            color: #FFF842;
+        }
+
+        .container th h1 {
+            font-weight: bold;
+            font-size: 1em;
+            color: #185875;
+            text-align: center;
+        }
+
+        .container td {
+            font-weight: normal;
+            font-size: 1em;
+            -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+            -moz-box-shadow: 0 2px 2px -2px #0E1119;
+            box-shadow: 0 2px 2px -2px #0E1119;
+        }
+
+        .container {
+            text-align: left;
+            overflow: hidden;
+            width: 80%;
+            margin: 0 auto;
+            display: table;
+            padding: 0 0 8em 0;
+        }
+
+            .container td, .container th {
+                padding-bottom: 2%;
+                padding-top: 2%;
+                padding-left: 2%;
+            }
+
+            /* Background-color of the odd rows */
+            .container tr:nth-child(odd) {
+                background-color: #323C50;
+            }
+
+            /* Background-color of the even rows */
+            .container tr:nth-child(even) {
+                background-color: #2C3446;
+            }
+
+            .container th {
+                background-color: #1F2739;
+            }
+
+            .container td:first-child {
+                color: #FB667A;
+            }
+
+            .container tr:hover {
+                background-color: #464A52;
+                -webkit-box-shadow: 0 6px 6px -6px #0E1119;
+                -moz-box-shadow: 0 6px 6px -6px #0E1119;
+                box-shadow: 0 6px 6px -6px #0E1119;
+            }
+
+            .container td:hover {
+                background-color: #FFF842;
+                color: #403E10;
+                font-weight: bold;
+                box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;
+                transform: translate3d(6px, -6px, 0);
+                transition-delay: 0s;
+                transition-duration: 0.4s;
+                transition-property: all;
+                transition-timing-function: line;
+            }
+
+        @media (max-width: 800px) {
+            .container td:nth-child(4),
+            .container th:nth-child(4) {
+                display: none;
+            }
+        }
+
+        tr td img {
+            height: 30px;
+            width: 30px;
+        }
+
+        input[type=checkbox] {
+            text-align: center;
+            height: 20px;
+            width: 20px;
+            outline: 2px solid #4DC3FA;
+        }
+
+        .collapsible {
+            background-color: #1f2739;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 15px;
+        }
+
+            .active, .collapsible:hover {
+                background-color: #195773;
+            }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #4cc0f6;
+            text-align: center;
+            color: white;
+        }
+
+        #DT {
+            margin: 0 auto;
+            clear: both;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc {
+            color: yellow;
+        }
+
+        div.dataTables_wrapper div.dataTables_length select {
+            width: 75px;
+            display: inline-block;
+            background-color: #A7A1AE;
+        }
+
+        label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #195271;
+        }
+
+        input[type=search] {
+            -webkit-appearance: none;
+            background-color: #A7A1AE;
+        }
+
+
+        #DT_filter, #DT_paginate { /*filter - serach div     paginate - next$ prev button page */
+            margin-right: 10%;
+        }
+
+        #DT_length { /* num od rows in page */
+            margin-left: 10%;
+        }
+
+    </style>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <script>
+
+        // will run when the document is ready
+        $(document).ready(function () {
+            //$('[data-toggle="popover"]').popover()
+            HobbiesList = [];
+            // once the document is ready we fetch a list of cars from the server
+            ajaxCall("GET", "../api/hobbies", "", successGetHobbies, errorGetHobbies);
+            ajaxCall("GET", "../api/persons", "", getSuccess, error);
+
+        });
+
+
+
+        $(document).on('change', 'input[name="IsActive"]', function () {
+            if ($(this).is(":checked")) {
+                ajaxCall("PUT", "../api/persons/?Active=" + 1 + "&PersonId=" + $(this).attr('value'), "", updateSuccess, error);
+            }
+            else {
+                ajaxCall("PUT", "../api/persons/?Active=" + 0 + "&PersonId=" + $(this).attr('value') ,"", updateSuccess, error);
+            }
+        });
+
+        // this should be used when the active value is changed
+        //var Active = 1; // replace with true value
+        //var PersonId = 123 //replace with the user id that clicked
+
+        function BuildColap() {
+            var coll = $(".collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display === "block") {
+                        content.style.display = "none";
+                    } else {
+                        content.style.display = "block";
+                    }
+                });
+            }
+        }
+
+        // success callback function after update
+        function updateSuccess() {
+            swal("Updated Successfuly!", "Activity Changed", "success");
+        }
+
+        function successGetHobbies(hobbiesdata) {
+            HobbiesList = hobbiesdata;
+        }
+        function errorGetHobbies(err) {
+            swal("Error: " + err);
+        }
+
+
+
+        // this function is activated in case of a success
+        function getSuccess(persondata) {
+
+            str = "";
+
+            for (var i = 0; i < persondata.length; i++) {
+                str += "<tr id='" + persondata[i].ID + "'>";
+                str += "<td> <img src='" + persondata[i].Image + "'/></td>"
+                str += "<td>" + persondata[i].Email + "</td>"
+                str += "<td>" + persondata[i].Name + "</td>"
+                str += "<td>" + persondata[i].FamilyName + "</td>"
+                str += "<td>" + persondata[i].Address + "</td>"
+
+                if (persondata[i].Gender == "Male") {
+                    str += "<td> <img src='Images/male.jpg'/></td>"
+                }
+                else {
+                    str += "<td><img src = 'Images/female.jpg' /></td>"
+                }
+
+                str += "<td>" + persondata[i].Age + "</td>"
+                str += "<td>" + persondata[i].Height + "</td>"
+
+                if (persondata[i].Phone == null) {
+                    str += "<td>-------</td>"
+                }
+                else {
+                    str += "<td>" + persondata[i].Phone + "</td>"
+
+                }
+
+                //str += "<td>" + persondata[i].Phone + "</td>"
+                if (persondata[i].Hobbies.length != 0)
+                {
+                   
+                    if (persondata[i].IsPremium)
+                    {
+                        var tempstr = "";
+                        for (var k = 0; k < persondata[i].Hobbies.length; k++)
+                        {
+                            tempstr += HobbiesList[persondata[i].Hobbies[k] - 1].Hname + " ";
+                        }
+                        str += "<td><button class='collapsible' >I have an Hobbies</button><p class='content'>" + tempstr + "</p></td>"
+                    }
+                    else
+                    {
+                        str += "<td>No-Hobbies for Non Premium User</td>"
+                    } 
+                    
+                }
+                else {
+                    str += "<td> </td>"
+                }
+
+                str += "<td><input type='checkbox' name='IsActive' value='" + persondata[i].ID + "' id='active_" + persondata[i].ID + "'></td>"
+
+                if (persondata[i].IsPremium) {
+                    str += "<td><img src='Images/gold-star.png'/></td>"
+                }
+                else {
+                    str += "<td>  </td>"
+                }
+
+                str += "</tr>"
+            }
+            $("tbody").append(str);
+            BuildColap();
+            for (var i = 0; i < persondata.length; i++) {
+                if (persondata[i].IsActive) {
+                    $("#active_" + persondata[i].ID).prop('checked', true)
+                }
+            }
+            $("#DT").DataTable();
+        }
+
+        // this function is activated in case of a failure
+        function error(err) {
+            swal("Error: " + err);
+        }
+
+    </script>
+</head>
+<body>
+
+    <h1><span class="blue"></span>Persons<span class="blue"></span> <span class="yellow">Details</span></h1>
+    <!--<h2>Created with love by <a href="http://pablogarciafernandez.com" target="_blank">Pablo García Fernández</a></h2>-->
+    <table id="DT" class="container">
+        <thead>
+            <tr>
+                <th><h1>Image</h1></th>
+                <th><h1>Email</h1></th>
+                <th><h1>Name</h1></th>
+                <th><h1>Family Name</h1></th>
+                <th><h1>Address</h1></th>
+                <th><h1>Gender</h1></th>
+                <th><h1>Age</h1></th>
+                <th><h1>Height</h1></th>
+                <th><h1>Phone</h1></th>
+                <th><h1>Hobbies</h1></th>
+                <th><h1>Active</h1></th>
+                <th><h1>Premium</h1></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</body>
+</html>
